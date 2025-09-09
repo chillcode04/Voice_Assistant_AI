@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: #fdfaf6;
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        width: 400px;
+        padding: 30px;
+        border: 3px solid #d32f2f;
+        border-radius: 12px;
+        background-color: #fff3e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      h2 {
+        color: #d32f2f;
+        margin-bottom: 25px;
+      }
+
+      input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        margin: 8px 0 20px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      input[type="button"] {
+        padding: 10px 20px;
+        background-color: #d32f2f;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      input[type="button"]:hover {
+        background-color: #b71c1c;
+      }
+
+      .message {
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 16px;
+        color: green;
+        animation: fadeIn 0.6s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>BÁO CÁO ĐỒ ÁN SINH VIÊN</h2>
+
+      <label for="mssv"> MSSV:</label><br>
+      <input type="text" id="mssv" name="mssv" required><br>
+
+      <label for="date"> Ngày báo cáo (dd/mm/yyyy):</label><br>
+      <input type="text" id="date" name="date" required placeholder="VD: 18/05/2025"><br>
+
+      <input type="button" value="💾 Lưu ví trí" onclick="saveConfig()">
+
+      <p id="message" class="message"></p>
+    </div>
+
+    <script>
+      function saveConfig() {
+        const mssv = document.getElementById('mssv').value.trim();
+        const date = document.getElementById('date').value.trim();
+
+        if (!mssv || !date) {
+          document.getElementById('message').innerText = "⚠️ Vui lòng nhập đầy đủ MSSV và ngày.";
+          document.getElementById('message').style.color = "red";
+          return;
+        }
+
+        google.script.run.withSuccessHandler(() => {
+          const msg = `✅ Đã lưu: MSSV ${mssv}, ngày ${date}`;
+          document.getElementById('message').innerText = msg;
+          document.getElementById('message').style.color = "green";
+        }).saveConfig(mssv, date);
+      }
+    </script>
+  </body>
+</html>
